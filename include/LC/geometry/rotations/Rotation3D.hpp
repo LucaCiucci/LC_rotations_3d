@@ -48,13 +48,13 @@ namespace lc
 		constexpr Rotation3(T rx, T ry, T rz);
 
 		// construct from vector
-		constexpr Rotation3(const Vector3<T>& rot_vec);
+		explicit constexpr Rotation3(const Vector3<T>& rot_vec);
 
 		// construct from rotation quaternion
-		constexpr Rotation3(Quaternion<T> rot_q);
+		explicit constexpr Rotation3(Quaternion<T> rot_q);
 
 		// construct from dir and angle
-		constexpr Rotation3(const Vector3<T>& dir, T angle);
+		explicit constexpr Rotation3(const Vector3<T>& dir, T angle);
 
 		// ================================
 		//             ACCESS
@@ -105,7 +105,7 @@ namespace lc
 		// ================================
 
 		// apply this rotation to a vector
-		constexpr Vector3<T> rotate_vector(const Vector3<T>& vec) const;
+		constexpr Vector3<T> rotate(const Vector3<T>& vec) const;
 
 		// invert the rotation (change sign)
 		constexpr Rotation3<T>& invert(void);
@@ -377,7 +377,7 @@ namespace lc
 		{
 			Vector3<T> e_j; e_j[j] = T(1);// TODO penso che i, j, k e e_i siano gia' definiti
 
-			auto r = this->rotate_vector(e_j);
+			auto r = this->rotate(e_j);
 
 			for (size_t i = 0; i < 3; i++)
 				R[i][j] = r[i];
@@ -410,7 +410,7 @@ namespace lc
 
 	////////////////////////////////////////////////////////////////
 	template <lc::math::concepts::ScalarType T>
-	inline constexpr Vector3<T> Rotation3<T>::rotate_vector(const Vector3<T>& vec) const
+	inline constexpr Vector3<T> Rotation3<T>::rotate(const Vector3<T>& vec) const
 	{
 		auto q = this->to_quaternion();
 
@@ -460,7 +460,7 @@ namespace lc
 
 		auto q_tot = q2 * q1;
 
-		*this = q_tot;
+		*this = (Rotation3<T>)q_tot;
 
 		return *this;
 	}
