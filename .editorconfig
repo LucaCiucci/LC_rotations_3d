@@ -1,0 +1,7 @@
+
+
+root = true
+
+[*.{h,c,hpp,cpp,hxx,cxx,hh,cc}]
+indent_style = tab
+tab_width = 4
